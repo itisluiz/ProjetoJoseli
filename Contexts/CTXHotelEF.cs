@@ -1,5 +1,6 @@
-namespace HotelEF.Models;
+namespace HotelEF.Contexts;
 
+using HotelEF.Models;
 using Microsoft.EntityFrameworkCore;
 
 public class CTXHotelEF : DbContext
