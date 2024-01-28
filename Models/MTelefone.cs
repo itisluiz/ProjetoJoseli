@@ -9,5 +9,12 @@ public class MTelefone
     public int Codigo { get; set; }
 
     [MaxLength(24)]
-    public string? Numero { get; set; }   
+    public string? Numero { get; set; }
+
+    private MTelefone() { }
+
+    public MTelefone(string numero)
+    {
+        this.Numero = numero;
+    }
 }

@@ -125,4 +125,58 @@ public class CCliente : Controller
             }
         }
     }
+
+#region telefone
+    [HttpPut("telefone")]
+    public ActionResult<MTelefone> PutClienteTelefone([FromQuery] int codigoCliente, [FromForm] string numero)
+    {
+        using (Contexts.CTXHotelEF ctx = new Contexts.CTXHotelEF())
+        {
+            MCliente? cliente = EagerClientes(ctx, codigoCliente);
+
+            if (cliente == null)
+                return Resultado.De(new APINaoEncontradoException($"Cliente de código '{codigoCliente}' não encontrado"));
+
+            try
+            { 
+                MTelefone telefone = new MTelefone(numero);
+                cliente.Telefones.Add(telefone);
+                ctx.SaveChanges();
+                return Resultado.De(telefone);
+            }
+            catch (Exception excecao)
+            {
+                return Resultado.De(excecao);
+            }
+        }
+    }
+
+    [HttpDelete("telefone")]
+    public ActionResult<MTelefone> DeleteClienteTelefone([FromQuery] int codigoCliente, [FromForm] int codigoTelefone)
+    {
+        using (Contexts.CTXHotelEF ctx = new Contexts.CTXHotelEF())
+        {
+            MCliente? cliente = EagerClientes(ctx, codigoCliente);
+
+            if (cliente == null)
+                return Resultado.De(new APINaoEncontradoException($"Cliente de código '{codigoCliente}' não encontrado"));
+
+            MTelefone? telefone = cliente.Telefones.FirstOrDefault(telefone => telefone.Codigo == codigoTelefone);
+
+            if (telefone == null)
+                return Resultado.De(new APINaoEncontradoException($"Cliente de código '{codigoCliente}' não possuí um telefone de código '{codigoTelefone}'"));
+            
+            try
+            { 
+                cliente.Telefones.Remove(telefone);
+                ctx.SaveChanges();
+                return Resultado.De(telefone);
+            }
+            catch (Exception excecao)
+            {
+                return Resultado.De(excecao);
+            }
+        }
+    }
+#endregion
 }

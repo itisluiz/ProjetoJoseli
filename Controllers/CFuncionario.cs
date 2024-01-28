@@ -125,4 +125,58 @@ public class CFuncionario : Controller
             }
         }
     }
+
+#region telefone
+    [HttpPut("telefone")]
+    public ActionResult<MTelefone> PutFuncionarioTelefone([FromQuery] int codigoFuncionario, [FromForm] string numero)
+    {
+        using (Contexts.CTXHotelEF ctx = new Contexts.CTXHotelEF())
+        {
+            MFuncionario? funcionario = EagerFuncionarios(ctx, codigoFuncionario);
+
+            if (funcionario == null)
+                return Resultado.De(new APINaoEncontradoException($"Funcionário de código '{codigoFuncionario}' não encontrado"));
+
+            try
+            { 
+                MTelefone telefone = new MTelefone(numero);
+                funcionario.Telefones.Add(telefone);
+                ctx.SaveChanges();
+                return Resultado.De(telefone);
+            }
+            catch (Exception excecao)
+            {
+                return Resultado.De(excecao);
+            }
+        }
+    }
+
+    [HttpDelete("telefone")]
+    public ActionResult<MTelefone> DeleteFuncionarioTelefone([FromQuery] int codigoFuncionario, [FromForm] int codigoTelefone)
+    {
+        using (Contexts.CTXHotelEF ctx = new Contexts.CTXHotelEF())
+        {
+            MFuncionario? funcionario = EagerFuncionarios(ctx, codigoFuncionario);
+
+            if (funcionario == null)
+                return Resultado.De(new APINaoEncontradoException($"Funcionário de código '{codigoFuncionario}' não encontrado"));
+
+            MTelefone? telefone = funcionario.Telefones.FirstOrDefault(telefone => telefone.Codigo == codigoTelefone);
+
+            if (telefone == null)
+                return Resultado.De(new APINaoEncontradoException($"Funcionário de código '{codigoFuncionario}' não possuí um telefone de código '{codigoTelefone}'"));
+            
+            try
+            { 
+                funcionario.Telefones.Remove(telefone);
+                ctx.SaveChanges();
+                return Resultado.De(telefone);
+            }
+            catch (Exception excecao)
+            {
+                return Resultado.De(excecao);
+            }
+        }
+    }
+#endregion
 }
