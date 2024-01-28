@@ -168,7 +168,7 @@ public class CCliente : Controller
             
             try
             { 
-                cliente.Telefones.Remove(telefone);
+                ctx.Telefones.Remove(telefone);
                 ctx.SaveChanges();
                 return Resultado.De(telefone);
             }

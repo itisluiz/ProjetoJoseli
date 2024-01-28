@@ -168,7 +168,7 @@ public class CFuncionario : Controller
             
             try
             { 
-                funcionario.Telefones.Remove(telefone);
+                ctx.Telefones.Remove(telefone);
                 ctx.SaveChanges();
                 return Resultado.De(telefone);
             }
