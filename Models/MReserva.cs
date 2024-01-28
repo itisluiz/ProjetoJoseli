@@ -17,4 +17,15 @@ public class MReserva
     public MCliente? Cliente { get; set; }
 
     public MFuncionario? Funcionario { get; set; }
+
+    private MReserva() { }
+
+    public MReserva(DateTime prevista, MQuarto quarto, MCliente cliente, MFuncionario funcionario)
+    {
+        this.Criacao = DateTime.Now;
+        this.Prevista = prevista;
+        this.Quarto = quarto;
+        this.Cliente = cliente;
+        this.Funcionario = funcionario;
+    }
 }
