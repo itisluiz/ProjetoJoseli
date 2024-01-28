@@ -14,7 +14,16 @@ public class MFilial
     [MaxLength(256)]
     public string? Endereco { get; set; }
 
-    public float Estrelas { get; set; }
+    public float? Estrelas { get; set; }
 
-    public ICollection<MQuartosFilial>? Quartos { get; set; } = new List<MQuartosFilial>();
+    public ICollection<MQuartosFilial> Quartos { get; set; } = new List<MQuartosFilial>();
+
+    private MFilial() { }
+
+    public MFilial(string nome, string endereco, float estrelas)
+    {
+        this.Nome = nome;
+        this.Endereco = endereco;
+        this.Estrelas = estrelas;
+    }
 }

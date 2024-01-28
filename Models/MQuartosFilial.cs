@@ -4,18 +4,20 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-[PrimaryKey(nameof(CodigoFilial), nameof(CodigoTipoQuarto))]
 public class MQuartosFilial
 {
-    public int CodigoFilial { get; set; }
-
-    public int CodigoTipoQuarto { get; set; }
-
+    [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Codigo { get; set; }
+    
     public int Quantidade { get; set; }
 
-    [ForeignKey("CodigoFilial")]
-    public MFilial? Filial { get; set; }
-
-    [ForeignKey("CodigoTipoQuarto")]
     public MTipoQuarto? TipoQuarto { get; set; }
+
+    private MQuartosFilial() { }
+
+    public MQuartosFilial(MTipoQuarto tipoQuarto, int quantidade)
+    {
+        this.TipoQuarto = tipoQuarto;
+        this.Quantidade = quantidade;
+    }
 }

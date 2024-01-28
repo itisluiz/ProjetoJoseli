@@ -14,8 +14,8 @@ public class CFuncionario : Controller
     private IIncludableQueryable<MFuncionario, ISet<MTelefone>> EagerFuncionarios(Contexts.CTXHotelEF ctx)
     {
         return ctx.Funcionarios
-            .Include(cliente => cliente.Tipo)
-            .Include(cliente => cliente.Telefones);
+            .Include(funcionario => funcionario.Tipo)
+            .Include(funcionario => funcionario.Telefones);
     }
 
     private MFuncionario? EagerFuncionarios(Contexts.CTXHotelEF ctx, int? codigo)
@@ -24,7 +24,7 @@ public class CFuncionario : Controller
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<MCliente>> GetFuncionario([FromQuery] int? codigoFuncionario)
+    public ActionResult<IEnumerable<MFuncionario>> GetFuncionario([FromQuery] int? codigoFuncionario)
     {
         using (Contexts.CTXHotelEF ctx = new Contexts.CTXHotelEF())
         {
@@ -105,7 +105,7 @@ public class CFuncionario : Controller
     }
 
     [HttpDelete]
-    public ActionResult<MCliente> DeleteFuncionario([FromForm] int codigoFuncionario)
+    public ActionResult<MFuncionario> DeleteFuncionario([FromForm] int codigoFuncionario)
     {
         using (Contexts.CTXHotelEF ctx = new Contexts.CTXHotelEF())
         {
