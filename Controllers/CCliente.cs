@@ -11,14 +11,14 @@ using Microsoft.EntityFrameworkCore.Query;
 [Route("api/cliente")]
 public class CCliente : Controller
 {
-    public IIncludableQueryable<MCliente, ISet<MTelefone>> EagerClientes(Contexts.CTXHotelEF ctx)
+    private IIncludableQueryable<MCliente, ISet<MTelefone>> EagerClientes(Contexts.CTXHotelEF ctx)
     {
         return ctx.Clientes
             .Include(cliente => cliente.Nacionalidade)
             .Include(cliente => cliente.Telefones);
     }
 
-    public MCliente? EagerClientes(Contexts.CTXHotelEF ctx, int? codigo)
+    private MCliente? EagerClientes(Contexts.CTXHotelEF ctx, int? codigo)
     {
         return EagerClientes(ctx).FirstOrDefault(cliente => cliente.Codigo == codigo);
     }
@@ -105,7 +105,7 @@ public class CCliente : Controller
     }
 
     [HttpDelete]
-    public ActionResult<MCliente> DeleteCliente([FromForm] int? codigoCliente)
+    public ActionResult<MCliente> DeleteCliente([FromForm] int codigoCliente)
     {
         using (Contexts.CTXHotelEF ctx = new Contexts.CTXHotelEF())
         {

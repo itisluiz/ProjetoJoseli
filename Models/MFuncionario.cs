@@ -20,4 +20,14 @@ public class MFuncionario
     public MTipoFuncionario? Tipo { get; set; }
 
     public ISet<MTelefone> Telefones { get; set; } = new HashSet<MTelefone>();
+
+    private MFuncionario() { }
+
+    public MFuncionario(string nome, string endereco, string email, MTipoFuncionario tipo)
+    {
+        this.Nome = nome;
+        this.Endereco = endereco;
+        this.Email = email;
+        this.Tipo = tipo;
+    }
 }
