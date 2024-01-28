@@ -13,4 +13,13 @@ public class MEstadia
     public DateTime? CheckOut { get; set; }
     
     public MReserva? Reserva { get; set; }
+
+    private MEstadia() { }
+
+    public MEstadia(MReserva reserva)
+    {
+        this.CheckIn = DateTime.Now;
+        this.CheckOut = null;
+        this.Reserva = reserva;
+    }
 }
