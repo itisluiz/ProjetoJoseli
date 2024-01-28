@@ -16,7 +16,17 @@ public class MCliente
 
     [MaxLength(128)]
     public string? Email { get; set; }
-    public MNacionalidade? Tipo { get; set; }
+    public MNacionalidade? Nacionalidade { get; set; }
     
     public ISet<MTelefone> Telefones { get; set; } = new HashSet<MTelefone>();
+
+    private MCliente() { }
+
+    public MCliente(string nome, string endereco, string email, MNacionalidade nacionalidade)
+    {
+        this.Nome = nome;
+        this.Endereco = endereco;
+        this.Email = email;
+        this.Nacionalidade = nacionalidade;
+    }
 }
