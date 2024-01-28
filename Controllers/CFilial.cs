@@ -128,26 +128,48 @@ public class CFilial : Controller
             if (tipoQuarto == null)
                 return Resultado.De(new APINaoEncontradoException($"Tipo de quarto de código '{codigoTipoQuarto}' não encontrado"));
 
+            if (quantidade <= 0)
+                return Resultado.De(new APIValorInvalidoException($"A quantidade deve ser maior do que zero, para remover use o verbo DELETE"));
+
             try
             {
                 MQuartosFilial? quartosFilial = filial.Quartos.FirstOrDefault(quartoFilial => quartoFilial.TipoQuarto == tipoQuarto);
 
                 if (quartosFilial == null)
                 {
-                    if (quantidade <= 0)
-                        return Resultado.De(new APINaoEncontradoException($"Impossível remover tipo de quarto '{codigoTipoQuarto}' não atribuido"));
-
                     quartosFilial = new MQuartosFilial(tipoQuarto, quantidade);
                     filial.Quartos.Add(quartosFilial);
                 }
-                else
-                {
-                    if (quantidade <= 0)
-                        ctx.QuartosFiliais.Remove(quartosFilial);
-                    else
-                        quartosFilial.Quantidade = quantidade;
-                }
-                    
+                    quartosFilial.Quantidade = quantidade;
+
+                ctx.SaveChanges();
+                return Resultado.De(quartosFilial);
+            }
+            catch (Exception excecao)
+            {
+                return Resultado.De(excecao);
+            }
+        }
+    }
+
+    [HttpDelete("quartos")]
+    public ActionResult<MQuartosFilial> DeleteFilialQuartos([FromQuery] int codigoFilial, [FromForm] int codigoTipoQuarto)
+    {
+        using (Contexts.CTXHotelEF ctx = new Contexts.CTXHotelEF())
+        {
+            MFilial? filial = EagerFiliais(ctx, codigoFilial);
+
+            if (filial == null)
+                return Resultado.De(new APINaoEncontradoException($"Filial de código '{codigoFilial}' não encontrada"));
+
+            try
+            {
+                MQuartosFilial? quartosFilial = filial.Quartos.FirstOrDefault(quarto => quarto.TipoQuarto?.Codigo == codigoTipoQuarto);
+
+                if (quartosFilial == null)
+                    return Resultado.De(new APINaoEncontradoException($"Filial de código '{codigoFilial}' não possuí quartos de tipo código '{codigoTipoQuarto}'"));
+
+                ctx.QuartosFiliais.Remove(quartosFilial);
                 ctx.SaveChanges();
                 return Resultado.De(quartosFilial);
             }
@@ -158,5 +180,4 @@ public class CFilial : Controller
         }
     }
 #endregion
-
 }
