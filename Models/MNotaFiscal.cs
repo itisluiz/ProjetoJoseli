@@ -12,4 +12,13 @@ public class MNotaFiscal
     public MTipoPagamento? TipoPagamento { get; set; }
 
     public MEstadia? Estadia { get; set; }
+
+    private MNotaFiscal() { }
+
+    public MNotaFiscal(string NFe, MTipoPagamento tipoPagamento, MEstadia estadia)
+    {
+        this.NFe = NFe;
+        this.TipoPagamento = tipoPagamento;
+        this.Estadia = estadia;
+    }
 }
