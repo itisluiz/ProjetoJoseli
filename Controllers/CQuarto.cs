@@ -87,7 +87,7 @@ public class CQuarto : Controller
                     quarto.AdaptadoEspecial = adaptadoEspecial;
 
                 if (reservavel != null)
-                    quarto.Reservavel = reservavel;
+                    quarto.Reservavel = reservavel.Value;
 
                 if (capacidade != null)
                     quarto.Capacidade = capacidade;

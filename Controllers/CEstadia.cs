@@ -85,7 +85,17 @@ public class CEstadia : Controller
                     estadia.CheckIn = checkIn;
 
                 if (checkOut != null)
+                {
+                    if (estadia.Reserva != null && estadia.CheckOut == null)
+                    {
+                        ctx.Entry(estadia.Reserva).Reference(reserva => reserva.Quarto).Load();
+
+                        if (estadia.Reserva.Quarto != null)
+                            estadia.Reserva.Quarto.Reservavel = true;
+                    }
+                    
                     estadia.CheckOut = checkOut;
+                }
 
                 if (reserva != null)
                     estadia.Reserva = reserva;

@@ -12,7 +12,7 @@ public class MQuarto
 
     public bool? AdaptadoEspecial { get; set; }
 
-    public bool? Reservavel { get; set; }
+    public bool Reservavel { get; set; }
 
     public int? Capacidade { get; set; }
     

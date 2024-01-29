@@ -51,9 +51,11 @@ public class CReserva : Controller
 
             if (quarto == null)
                 return Resultado.De(new APINaoEncontradoException($"Quarto de código '{codigoQuarto}' não encontrado"));
+            else if (!quarto.Reservavel)
+                return Resultado.De(new APINaoEncontradoException($"Quarto de código '{codigoQuarto}' não está em estado reservável"));
 
             MCliente? cliente = ctx.Clientes.Find(codigoCliente);
-
+ 
             if (cliente == null)
                 return Resultado.De(new APINaoEncontradoException($"Cliente de código '{codigoCliente}' não encontrado"));
 
@@ -65,6 +67,8 @@ public class CReserva : Controller
             try
             {
                 MReserva reserva = ctx.Reservas.Add(new MReserva(prevista, quarto, cliente, funcionario)).Entity;
+                quarto.Reservavel = false;
+
                 ctx.SaveChanges();
                 return Resultado.De(cliente);
             }
@@ -89,6 +93,8 @@ public class CReserva : Controller
 
             if (codigoQuarto != null && quarto == null)
                 return Resultado.De(new APINaoEncontradoException($"Quarto de código '{codigoQuarto}' não encontrado"));
+            else if (quarto != null && !quarto.Reservavel)
+                return Resultado.De(new APINaoEncontradoException($"Quarto de código '{codigoQuarto}' não está em estado reservável"));
 
             MCliente? cliente = codigoCliente != null ? ctx.Clientes.Find(codigoCliente) : null;
 
@@ -106,7 +112,13 @@ public class CReserva : Controller
                     reserva.Prevista = prevista;
 
                 if (quarto != null)
+                {
+                    if (reserva.Quarto != null)
+                        reserva.Quarto.Reservavel = true;
+
                     reserva.Quarto = quarto;
+                    quarto.Reservavel = false;
+                }
 
                 if (cliente != null)
                     reserva.Cliente = cliente;
