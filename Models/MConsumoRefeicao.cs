@@ -11,7 +11,7 @@ public class MConsumoRefeicao
     public bool? EntregaQuarto { get; set; }
 
     [Column(TypeName = "decimal(12,2)")]
-    public decimal? Custo { get; set; }
+    public decimal Custo { get; set; }
 
     [MaxLength(64)]
     public string? Descricao { get; set; }
